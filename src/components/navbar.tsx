@@ -9,12 +9,15 @@ const Navbar = () => {
                 <div className="text-xl font-bold">
                     <Link href="/">My Dashboard</Link>
                 </div>
-                <ul className="flex space-x-4">
+                <ul className="flex space-x-4 justify-center items-center">
                     <li>
                         <Link href="/">Home</Link>
                     </li>
                     <li>
                         <Link href="/Add-Students">Add Students</Link>
+                    </li>
+                    <li>
+                        <Link href="/new-record">New Record</Link>
                     </li>
                     <li>
                         <div><SignOut /></div>

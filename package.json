@@ -12,9 +12,8 @@
     "lint": "next lint",
     "db:migrate": "npx prisma migrate dev",
     "db:reset": "prisma migrate reset && prisma migrate dev",
-    "db:studio": "prisma studio",
-    "devStart": "nodemon script.ts",
-    "devStartf": "nodemon scriptget.ts"
+    "db:s": "prisma studio",
+    "db:f": "prisma format"
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.7.4",
