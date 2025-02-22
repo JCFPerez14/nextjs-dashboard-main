@@ -77,16 +77,16 @@ import Navbar from "@/components/navbar";
               className="space-y-4"
             >
               <select
-                name="studentId"
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-              >
-                <option value="">New Student</option>
+              name="studentId" required
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+                <option value="" disabled hidden>Pick a Student</option>
                 {students.map((student) => (
-                  <option key={student.id} value={student.id}>
-                    {student.student_name}
-                  </option>
-                ))}
-              </select>
+                    <option key={student.id} value={student.id}>
+                        {student.student_name}
+                        </option>
+                    ))}
+                    </select>
+
 
               <div id="newStudentFields" className="space-y-4">
                 <Input
