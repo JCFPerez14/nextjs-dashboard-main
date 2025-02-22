@@ -14,6 +14,7 @@ export interface StudentRowProps {
 }
 
 const StudentRow: React.FC<StudentRowProps> = ({ studentName, timePenalty, violations }) => {
+  // Use one state to control expansion for both primary text and additional rows.
   const [expanded, setExpanded] = useState(false);
 
   // Always show the first violation in the main row.
@@ -21,15 +22,23 @@ const StudentRow: React.FC<StudentRowProps> = ({ studentName, timePenalty, viola
   // Additional violations for expanded view.
   const additionalViolations = violations.slice(1);
 
+  // Check if the primary violation text is long enough to warrant truncation.
+  const TEXT_THRESHOLD = 50;
+  const isLong = primaryViolation.violation.length > TEXT_THRESHOLD;
+  // Show toggle button if the primary text is long or if there are additional violations.
+  const showToggleButton = isLong || additionalViolations.length > 0;
+
   return (
     <>
       <tr>
         <td className="px-6 py-4 text-sm text-gray-900">{studentName}</td>
         <td className="px-6 py-4 text-sm text-gray-900">
-          <div className="truncate max-w-[200px] text-xs mt-1">
+          <div
+            className={`text-xs mt-1 ${!expanded && isLong ? "truncate max-w-[200px]" : ""}`}
+          >
             {primaryViolation.violation}
           </div>
-          {violations.length > 1 && (
+          {showToggleButton && (
             <button
               onClick={() => setExpanded(!expanded)}
               className="text-blue-500 underline text-xs mt-1"
