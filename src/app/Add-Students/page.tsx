@@ -42,16 +42,16 @@ const Page = async () => {
                     });
                   } else {
                     // Create new student with violation and time penalty
-                    const timePenaltyInput = formData.get("TimePenalty");
-                    const timePenalty = timePenaltyInput
+                    const timePenaltyInput = formData.get("timePenalty");
+                    const TimePenalty = timePenaltyInput
                       ? parseInt(String(timePenaltyInput), 10)
-                      : 200; // Fallback to default if no value provided
+                      : 200;
 
                     const data = {
                       student_name: String(formData.get("student_name")),
                       email: String(formData.get("email")),
                       phone: String(formData.get("phone")),
-                      TimePenalty: timePenalty,
+                      /* TimePenalty: timePenalty, */
                       violations: {
                         create: [
                           {
