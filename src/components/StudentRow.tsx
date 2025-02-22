@@ -26,7 +26,7 @@ const StudentRow: React.FC<StudentRowProps> = ({ studentName, timePenalty, viola
       <tr>
         <td className="px-6 py-4 text-sm text-gray-900">{studentName}</td>
         <td className="px-6 py-4 text-sm text-gray-900">
-          <div className="truncate max-w-[200px]">
+          <div className="truncate max-w-[200px] text-xs mt-1">
             {primaryViolation.violation}
           </div>
           {violations.length > 1 && (
