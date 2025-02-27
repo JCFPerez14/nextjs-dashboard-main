@@ -1,49 +1,86 @@
-import React from "react";
-import Navbar from "@/components/navbar";
-import { SignOut } from "@/components/sign-out";
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
+import React from 'react';
+import Navbar from '@/components/navbar';
+import { auth } from '@/lib/auth';
+import { redirect } from 'next/navigation';
+import prismaClient from '@/lib/db';
+import StudentRow from '@/components/StudentRow';
 
 const Page = async () => {
   const session = await auth();
-  if (!session) redirect("/sign-in");
+  if (!session) redirect('/sign-in');
+
+  // Fetch violations along with the associated student details
+  const allViolations = await prismaClient.students_violations_type.findMany({
+    include: {
+      student: true,
+    },
+  });
 
   type Violation = {
-    id: number;
-    studentName: string;
+    id: string;
     violation: string;
     date: string;
   };
 
-  const violationsList: Violation[] = [
-    { id: 1, studentName: "John Doe", violation: "Late submission", date: "2023-10-11" },
-    { id: 2, studentName: "Jane Smith", violation: "Cheating on exam", date: "2023-10-10" },
-    { id: 3, studentName: "Alice Johnson", violation: "Disruptive behavior", date: "2023-10-09" },
-  ];
+  type StudentViolations = {
+    studentName: string;
+    timePenalty: number;
+    violations: Violation[];
+  };
+
+  // Group violations by student id
+  const groupedViolations = allViolations.reduce((acc, violation) => {
+    const studentId = violation.student.id;
+    if (!acc[studentId]) {
+      acc[studentId] = {
+        studentName: violation.student.student_name,
+        timePenalty: violation.student.timePenalty,
+        violations: [],
+      };
+    }
+    acc[studentId].violations.push({
+      id: violation.id,
+      violation: violation.violations,
+      date: violation.createdAt.toISOString().split("T")[0],
+    });
+    return acc;
+  }, {} as Record<string, StudentViolations>);
+
+  const groupedViolationsList = Object.values(groupedViolations);
 
   return (
-    <><Navbar />
+    <>
       <main className="container mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-lg p-6 font-sans">
-          <h1 className="text-3xl font-bold mb-6 text-gray-800">Student Violations Dashboard</h1>
+          <h1 className="text-3xl font-bold mb-6 text-gray-800">
+            Student Violations Dashboard
+          </h1>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student Name</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Violation</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Student Name
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Violation
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Date
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Time Penalty
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {violationsList.map((violation) => (
-                  <tr key={violation.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{violation.id}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{violation.studentName}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{violation.violation}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{violation.date}</td>
-                  </tr>
+                {groupedViolationsList.map((student, index) => (
+                  <StudentRow
+                    key={index}
+                    studentName={student.studentName}
+                    timePenalty={student.timePenalty}
+                    violations={student.violations}
+                  />
                 ))}
               </tbody>
             </table>

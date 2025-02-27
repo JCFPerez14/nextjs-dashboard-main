@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "sqlite" //"mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -98,5 +98,5 @@ model students {
   createdAt    DateTime                   @default(now())
   updatedAt    DateTime                   @updatedAt
   violations   students_violations_type[]
-  TimePenalty  Int                        @default(200)
+  timePenalty  Int                        @default(200)
 }
