@@ -12,7 +12,6 @@ const Page = async () => {
 
   return (
     <>
-      {/* <Navbar /> */}
       <div className="w-full max-w-sm mx-auto space-y-6">
         <div className="space-y-4">
           <h1 className="text-3xl font-bold text-center">Add Student</h1>
@@ -46,17 +45,18 @@ const Page = async () => {
             }}
             className="space-y-4"
           >
-            <Input
+            <Input required
               type="text"
               name="student_name"
               placeholder="Student Name"
             />
-            <Input type="email" name="email" placeholder="Email" />
-            <Input type="tel" name="phone" placeholder="Phone Number" />
-            <Input type="text" name="violations" placeholder="Violation" />
-            <Input
+            <Input required type="email" name="email" placeholder="Email" />
+            <Input required type="tel" name="phone" placeholder="Phone Number" pattern="\d+"/>
+            <Input required type="text" name="violations" placeholder="Violation" />
+            <Input required
               type="number"
               name="timePenalty"
+              step="1"
               placeholder="Time Penalty (hours)"
             />
             <Button type="submit" className="w-full">
