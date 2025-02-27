@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { executeAction } from "@/lib/executeAction";
 import Navbar from "@/components/navbar";
+import PhoneInput from "@/components/PhoneInput";
 
 const Page = async () => {
   const session = await auth();
@@ -51,12 +52,16 @@ const Page = async () => {
               placeholder="Student Name"
             />
             <Input required type="email" name="email" placeholder="Email" />
-            <Input required type="tel" name="phone" placeholder="Phone Number" pattern="\d+"/>
+            <PhoneInput
+              required
+              type="tel"
+              name="phone"
+              placeholder="Phone Number"
+            />
             <Input required type="text" name="violations" placeholder="Violation" />
-            <Input required
+            <PhoneInput required
               type="number"
               name="timePenalty"
-              step="1"
               placeholder="Time Penalty (hours)"
             />
             <Button type="submit" className="w-full">

@@ -6,7 +6,7 @@ import { executeAction } from "@/lib/executeAction";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import db from "@/lib/db";
-import Navbar from "@/components/navbar";
+import PhoneInput from "@/components/PhoneInput";
 
 const Page = async () => {
   const session = await auth();
@@ -97,7 +97,7 @@ const Page = async () => {
                 name="violations"
                 placeholder="Violation"
               />
-              <Input required
+              <PhoneInput required
                 type="number"
                 step="1"
                 name="timePenalty"
