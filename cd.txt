@@ -1,0 +1,15 @@
+python -m venv venv
+<venv>\Scripts\activate.bat
+pip install flask
+pip install flask-cors
+pip install numpy
+pip install xgboost
+pip install -U scikit-learn
+pip install pickle5
+
+cd
+cd downloads/nextjs-dashboard-fin/server
+cd downloads/nextjs-dashboard-fin/client
+<venv>Scripts\activate.bat
+python server-t.py
+
