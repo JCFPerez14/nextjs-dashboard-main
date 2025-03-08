@@ -1,9 +1,12 @@
 "use client";
 import React, { useState, FormEvent } from "react";
 
-const PredictForm = () => {
+export interface PredictFormProps {
+  onPrediction: (Violation: string) => void;
+}
+
+const PredictForm: React.FC<PredictFormProps> = ({ onPrediction }) => {
   const [scenario, setScenario] = useState("");
-  const [numberOfOffense, setNumberOfOffense] = useState(1);
   const [prediction, setPrediction] = useState<{
     Category?: string;
     Violation?: string;
@@ -17,11 +20,14 @@ const PredictForm = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         scenario_text: scenario,
-        number_of_offense: numberOfOffense,
+        number_of_offense: 1, // adjust if needed
       }),
     });
     const data = await response.json();
     setPrediction(data);
+    if (data.Violation) {
+      onPrediction(data.Violation);
+    }
   };
 
   return (
@@ -41,6 +47,9 @@ const PredictForm = () => {
             />
           </label>
         </div>
+        <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded">
+          Predict
+        </button>
       </form>
       {prediction.Category && (
         <div className="mt-4">
