@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 
 export interface PredictFormProps {
-  onPrediction: (violation: string) => void;
+  onPrediction: (prediction: { violation: string; scenario: string }) => void;
 }
 
 const PredictForm: React.FC<PredictFormProps> = ({ onPrediction }) => {
@@ -24,8 +24,9 @@ const PredictForm: React.FC<PredictFormProps> = ({ onPrediction }) => {
     });
     const data = await response.json();
     setPrediction(data);
+    // Call onPrediction with both violation and scenario.
     if (data.Violation) {
-      onPrediction(data.Violation);
+      onPrediction({ violation: data.Violation, scenario });
     }
   };
 

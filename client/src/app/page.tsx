@@ -1,5 +1,4 @@
 import React from 'react';
-import Navbar from '@/components/navbar';
 import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import prismaClient from '@/lib/db';
@@ -9,7 +8,8 @@ const Page = async () => {
   const session = await auth();
   if (!session) redirect('/sign-in');
 
-  // Fetch violations along with the associated student details
+  // Fetch violations along with the associated student details.
+  // Now each violation includes the "scenario" field.
   const allViolations = await prismaClient.students_violations_type.findMany({
     include: {
       student: true,
@@ -18,6 +18,7 @@ const Page = async () => {
 
   type Violation = {
     id: string;
+    scenario: string;
     violation: string;
     date: string;
   };
@@ -28,7 +29,7 @@ const Page = async () => {
     violations: Violation[];
   };
 
-  // Group violations by student id
+  // Group violations by student id.
   const groupedViolations = allViolations.reduce((acc, violation) => {
     const studentId = violation.student.id;
     if (!acc[studentId]) {
@@ -40,6 +41,7 @@ const Page = async () => {
     }
     acc[studentId].violations.push({
       id: violation.id,
+      scenario: violation.scenario,
       violation: violation.violations,
       date: violation.createdAt.toISOString().split("T")[0],
     });
@@ -61,6 +63,9 @@ const Page = async () => {
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Student Name
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Scenario
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Violation

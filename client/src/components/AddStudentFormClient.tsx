@@ -8,6 +8,7 @@ import { addStudent } from "@/app/actions/addStudent.server";
 
 const AddStudentFormClient = () => {
   const [predictedViolation, setPredictedViolation] = useState("");
+  const [predictedScenario, setPredictedScenario] = useState("");
 
   return (
     <div className="w-full max-w-sm mx-auto space-y-6">
@@ -17,13 +18,25 @@ const AddStudentFormClient = () => {
           <Input required type="text" name="student_name" placeholder="Student Name" />
           <Input required type="email" name="email" placeholder="Email" />
           <PhoneInput required type="tel" name="phone" placeholder="Phone Number" />
-          <PredictForm onPrediction={(violation) => setPredictedViolation(violation)} />
+          <PredictForm
+            onPrediction={({ violation, scenario }) => {
+              setPredictedViolation(violation);
+              setPredictedScenario(scenario);
+            }}
+          />
           <Input
-          required
+            required
+            type="hidden"
+            name="scenario"
+            value={predictedScenario}
+          />
+          <Input
+            required
             type="text"
             name="violations"
             placeholder="Violation"
-            value={predictedViolation} onChange={(e) => setPredictedViolation(e.target.value)}
+            value={predictedViolation}
+            onChange={(e) => setPredictedViolation(e.target.value)}
           />
           <PhoneInput
             required
@@ -35,7 +48,6 @@ const AddStudentFormClient = () => {
             Add Student/Violation
           </Button>
         </form>
-        
       </div>
     </div>
   );

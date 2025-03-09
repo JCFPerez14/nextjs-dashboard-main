@@ -3,6 +3,7 @@ import React, { useState } from "react";
 
 export interface Violation {
   id: string;
+  scenario: string;
   violation: string;
   date: string;
 }
@@ -14,7 +15,6 @@ export interface StudentRowProps {
 }
 
 const StudentRow: React.FC<StudentRowProps> = ({ studentName, timePenalty, violations }) => {
-  // Use one state to control expansion for both primary text and additional rows.
   const [expanded, setExpanded] = useState(false);
 
   // Always show the first violation in the main row.
@@ -22,21 +22,22 @@ const StudentRow: React.FC<StudentRowProps> = ({ studentName, timePenalty, viola
   // Additional violations for expanded view.
   const additionalViolations = violations.slice(1);
 
-  // Check if the primary violation text is long enough to warrant truncation.
+  // Threshold for truncation.
   const TEXT_THRESHOLD = 50;
-  const isLong = primaryViolation.violation.length > TEXT_THRESHOLD;
-  // Show toggle button if the primary text is long or if there are additional violations.
-  const showToggleButton = isLong || additionalViolations.length > 0;
+  // Check if the primary violation text is long enough.
+  const isViolationLong = primaryViolation.violation.length > TEXT_THRESHOLD;
+  // Check if the primary scenario text is long enough.
+  const isScenarioLong = primaryViolation.scenario.length > TEXT_THRESHOLD;
+  // Show toggle button if either field is long or if there are additional violations.
+  const showToggleButton = isViolationLong || isScenarioLong || additionalViolations.length > 0;
 
   return (
     <>
       <tr>
         <td className="px-6 py-4 text-sm text-gray-900">{studentName}</td>
         <td className="px-6 py-4 text-sm text-gray-900">
-          <div
-            className={`text-xs mt-1 ${!expanded && isLong ? "truncate max-w-[200px]" : ""}`}
-          >
-            {primaryViolation.violation}
+          <div className={`${!expanded && isScenarioLong ? "truncate max-w-[200px]" : ""}`}>
+            {primaryViolation.scenario}
           </div>
           {showToggleButton && (
             <button
@@ -47,14 +48,20 @@ const StudentRow: React.FC<StudentRowProps> = ({ studentName, timePenalty, viola
             </button>
           )}
         </td>
+        <td className="px-6 py-4 text-sm text-gray-900">
+          <div className={`${!expanded && isViolationLong ? "truncate max-w-[200px]" : ""}`}>
+            {primaryViolation.violation}
+          </div>
+        </td>
         <td className="px-6 py-4 text-sm text-gray-600">{primaryViolation.date}</td>
         <td className="px-6 py-4 text-sm text-gray-900">{timePenalty}</td>
       </tr>
       {expanded &&
         additionalViolations.map((v) => (
           <tr key={v.id}>
-            {/* Empty cells where we don't want to repeat student name and time penalty */}
+            {/* Empty cells for student name and time penalty */}
             <td></td>
+            <td className="px-6 py-4 text-sm text-gray-900">{v.scenario}</td>
             <td className="px-6 py-4 text-sm text-gray-900">{v.violation}</td>
             <td className="px-6 py-4 text-sm text-gray-600">{v.date}</td>
             <td></td>

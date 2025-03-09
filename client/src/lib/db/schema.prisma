@@ -85,6 +85,7 @@ model students_violations_type {
   id         String   @id @default(cuid()) @map("_id")
   student    students @relation(fields: [studentId], references: [id])
   studentId  String   @map("_studentId")
+  scenario   String
   violations String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt

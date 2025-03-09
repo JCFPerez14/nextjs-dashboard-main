@@ -17,6 +17,7 @@ interface NewRecordFormClientProps {
 
 const NewRecordFormClient: React.FC<NewRecordFormClientProps> = ({ students }) => {
   const [predictedViolation, setPredictedViolation] = useState("");
+  const [predictedScenario, setPredictedScenario] = useState("");
 
   return (
     <div className="w-full max-w-sm mx-auto space-y-6">
@@ -39,7 +40,14 @@ const NewRecordFormClient: React.FC<NewRecordFormClientProps> = ({ students }) =
           </select>
 
           <div id="newStudentFields" className="space-y-4">
-            <PredictForm onPrediction={(violation) => setPredictedViolation(violation)} />
+            <PredictForm
+              onPrediction={({ violation, scenario }) => {
+                setPredictedViolation(violation);
+                setPredictedScenario(scenario);
+              }}
+            />
+            {/* Pass the predicted scenario to addStudent via a hidden input */}
+            <Input type="hidden" name="scenario" value={predictedScenario} />
             <Input
               type="text"
               name="violations"
