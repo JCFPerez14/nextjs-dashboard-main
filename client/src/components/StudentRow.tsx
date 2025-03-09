@@ -47,11 +47,6 @@ const StudentRow: React.FC<StudentRowProps> = ({
           <div className={`${!expanded && isScenarioLong ? "truncate max-w-[200px]" : ""}`}>
             {primaryViolation.scenario}
           </div>
-        </td>
-        <td className="px-6 py-4 text-sm text-gray-900">
-          <div className={`${!expanded && isViolationLong ? "truncate max-w-[200px]" : ""}`}>
-            {primaryViolation.violation}
-          </div>
           {showToggleButton && (
             <button
               onClick={() => setExpanded(!expanded)}
@@ -60,6 +55,11 @@ const StudentRow: React.FC<StudentRowProps> = ({
               {expanded ? "Show less" : "See more"}
             </button>
           )}
+        </td>
+        <td className="px-6 py-4 text-sm text-gray-900">
+          <div className={`${!expanded && isViolationLong ? "truncate max-w-[200px]" : ""}`}>
+            {primaryViolation.violation}
+          </div>
         </td>
         <td className="px-6 py-4 text-sm text-gray-600">{primaryViolation.date}</td>
         <td className="px-6 py-4 text-sm text-gray-900">{timePenalty}</td>
