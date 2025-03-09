@@ -17,6 +17,7 @@ const AddStudentFormClient = () => {
           <Input required type="text" name="student_name" placeholder="Student Name" />
           <Input required type="email" name="email" placeholder="Email" />
           <PhoneInput required type="tel" name="phone" placeholder="Phone Number" />
+          <PredictForm onPrediction={(violation) => setPredictedViolation(violation)} />
           <Input
           required
             type="text"
@@ -34,7 +35,7 @@ const AddStudentFormClient = () => {
             Add Student/Violation
           </Button>
         </form>
-        <PredictForm onPrediction={(violation) => setPredictedViolation(violation)} />
+        
       </div>
     </div>
   );

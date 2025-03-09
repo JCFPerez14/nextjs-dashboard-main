@@ -12,4 +12,3 @@ cd downloads/nextjs-dashboard-fin/server
 cd downloads/nextjs-dashboard-fin/client
 <venv>Scripts\activate.bat
 python server-t.py
-
