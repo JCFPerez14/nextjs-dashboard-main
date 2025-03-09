@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import PhoneInput from "@/components/PhoneInput";
 import PredictForm from "@/components/PredictForm";
 import { addStudent } from "@/app/actions/addStudent.server";
+import SearchableSelect from "@/components/SearchableSelect";
 
 interface Student {
   id: string;
@@ -18,26 +19,20 @@ interface NewRecordFormClientProps {
 const NewRecordFormClient: React.FC<NewRecordFormClientProps> = ({ students }) => {
   const [predictedViolation, setPredictedViolation] = useState("");
   const [predictedScenario, setPredictedScenario] = useState("");
+  const [selectedStudentId, setSelectedStudentId] = useState("");
 
   return (
     <div className="w-full max-w-sm mx-auto space-y-6">
       <div className="space-y-4">
         <h1 className="text-3xl font-bold text-center">New Record</h1>
         <form action={addStudent} className="space-y-4">
-          <select
-            name="studentId"
-            required
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-          >
-            <option value="" disabled hidden>
-              Pick a Student
-            </option>
-            {students.map((student) => (
-              <option key={student.id} value={student.id}>
-                {student.student_name}
-              </option>
-            ))}
-          </select>
+          {/* Searchable select replaces the plain select */}
+          <SearchableSelect
+            students={students}
+            onSelect={(studentId) => setSelectedStudentId(studentId)}
+          />
+          {/* Hidden input to pass selected student id with the form */}
+          <Input type="hidden" name="studentId" value={selectedStudentId} />
 
           <div id="newStudentFields" className="space-y-4">
             <PredictForm

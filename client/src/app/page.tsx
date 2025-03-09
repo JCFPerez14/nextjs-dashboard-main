@@ -1,15 +1,13 @@
-import React from 'react';
-import { auth } from '@/lib/auth';
-import { redirect } from 'next/navigation';
-import prismaClient from '@/lib/db';
-import StudentRow from '@/components/StudentRow';
+import React from "react";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import prismaClient from "@/lib/db";
+import SearchableStudentTable, { StudentViolations } from "@/components/SearchableStudentTable";
 
 const Page = async () => {
   const session = await auth();
-  if (!session) redirect('/sign-in');
+  if (!session) redirect("/sign-in");
 
-  // Fetch violations along with the associated student details.
-  // Now each violation includes the "scenario" field.
   const allViolations = await prismaClient.students_violations_type.findMany({
     include: {
       student: true,
@@ -27,6 +25,8 @@ const Page = async () => {
     studentName: string;
     timePenalty: number;
     violations: Violation[];
+    email?: string;
+    phone?: string;
   };
 
   // Group violations by student id.
@@ -37,6 +37,8 @@ const Page = async () => {
         studentName: violation.student.student_name,
         timePenalty: violation.student.timePenalty,
         violations: [],
+        email: violation.student.email,    // assuming this field exists
+        phone: violation.student.phone,      // assuming this field exists
       };
     }
     acc[studentId].violations.push({
@@ -57,39 +59,7 @@ const Page = async () => {
           <h1 className="text-3xl font-bold mb-6 text-gray-800">
             Student Violations Dashboard
           </h1>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Student Name
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Scenario
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Violation
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Date
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Time Penalty
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {groupedViolationsList.map((student, index) => (
-                  <StudentRow
-                    key={index}
-                    studentName={student.studentName}
-                    timePenalty={student.timePenalty}
-                    violations={student.violations}
-                  />
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <SearchableStudentTable students={groupedViolationsList} />
         </div>
       </main>
     </>
