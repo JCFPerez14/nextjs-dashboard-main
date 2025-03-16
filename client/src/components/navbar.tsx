@@ -6,7 +6,7 @@ import { SignOut } from './sign-out';
 
 export default function Navbar() {
     return (
-      <nav className="bg-gray-800 p-4 text-white">
+      <nav className="bg-blue-950 p-4 text-white">
         <div className="container mx-auto flex justify-between items-center">
           <div className="text-xl font-bold">
             <Link href="/">Student Discipline Office</Link>

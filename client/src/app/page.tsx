@@ -53,16 +53,23 @@ const Page = async () => {
   const groupedViolationsList = Object.values(groupedViolations);
 
   return (
-    <>
-      <main className="container mx-auto px-4 py-8">
-        <div className="bg-white rounded-lg shadow-lg p-6 font-sans">
-          <h1 className="text-3xl font-bold mb-6 text-gray-800">
-            Student Violations Dashboard
-          </h1>
-          <SearchableStudentTable students={groupedViolationsList} />
-        </div>
-      </main>
-    </>
+    <div className="relative h-screen w-full">
+      {/* Background image with blur */}
+      <div
+        className="absolute inset-0 bg-cover bg-center filter blur-[5px]"
+        style={{ backgroundImage: "url('/nu124.jpg')" }}
+      />
+      <div className="relative z-10">
+        <main className="container mx-auto px-4 py-8">
+          <div className="bg-white rounded-lg shadow-lg p-6 font-sans">
+            <h1 className="text-3xl font-bold mb-6 text-gray-800">
+              Student Violations Dashboard
+            </h1>
+            <SearchableStudentTable students={groupedViolationsList} />
+          </div>
+        </main>
+      </div>
+    </div>
   );
 };
 
