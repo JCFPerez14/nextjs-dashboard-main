@@ -17,8 +17,12 @@ git clone https://github.com/JCFPerez14/nextjs-dashboard-main.git
 cp .env.sample .env
 # Update .env with your values
 ```
+4. **Install & Run**
+```bash
+Requirements is in pip install.txt 
+```
 
-3. **Install & Run**
+4. **Install & Run**
 ```bash
 npm install
 npm run db:migrate
