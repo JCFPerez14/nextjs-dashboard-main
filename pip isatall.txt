@@ -1,0 +1,21 @@
+conda create --name XGBoost python=3.10.14
+conda activate XGBoost
+conda install -c conda-forge cudatoolkit=12.6 cudnn=9.6 --yes
+#conda install -c conda-forge cudatoolkit=11.2 cudnn=8.1.0 --yes
+python -m pip install "tensorflow<2.11"
+python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))" --yes
+
+pip install pandas xgboost scikit-learn==1.5.2 ipykernel openpyxl imbalanced-learn Smote fastapi uvicorn 
+
+
+conda install conda-forge::tensorflow --y
+conda install conda-forge/label/broken::tensorflow --y
+conda install conda-forge/label/cf201901::tensorflow --y
+conda install conda-forge/label/cf202003::tensorflow --y
+conda install conda-forge::keras --y
+conda install conda-forge/label/broken::keras --y
+conda install conda-forge/label/cf201901::keras --y
+conda install conda-forge/label/cf202003::keras --y
+conda install anaconda::numpy --y
+pip install joblib
+pip install flask flask-cors
